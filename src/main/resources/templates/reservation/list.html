@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{reservation.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{reservation.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/reservations/add}" th:text="#{reservation.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${reservations.empty}" th:text="#{reservation.list.empty}" />
+            <div th:if="${!reservations.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{reservation.id.label}" scope="col" />
+                            <th th:text="#{reservation.date.label}" scope="col" />
+                            <th th:text="#{reservation.startTime.label}" scope="col" />
+                            <th th:text="#{reservation.endTime.label}" scope="col" />
+                            <th th:text="#{reservation.userId.label}" scope="col" />
+                            <th th:text="#{reservation.user.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reservation : ${reservations}">
+                            <td th:text="${reservation.id}" />
+                            <td th:text="${reservation.date}" />
+                            <td th:text="${reservation.startTime}" />
+                            <td th:text="${reservation.endTime}" />
+                            <td th:text="${reservation.userId}" />
+                            <td th:text="${reservation.user}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/reservations/edit/{id}(id=${reservation.id})}" th:text="#{reservation.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/reservations/delete/{id}(id=${reservation.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{reservation.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
